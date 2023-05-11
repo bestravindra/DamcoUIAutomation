@@ -31,7 +31,7 @@ public class BaseConfiguration {
 			driver = DriverPool.getDriver(browser, nodeURL);
 			WebUtils.setDriver(driver);
 			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+			driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
 			WebUtils.navigateToURL(APPLICATION_URL);
 		} catch (Exception e) {
 			LOGGER.error("Error occured {} ", e.getMessage());

@@ -3,6 +3,7 @@ package com.damco.utils.selenium;
 
 
 import static com.damco.utils.common.Constants.LOG_DESIGN;
+import static com.damco.utils.selenium.WebUtils.getSizeOfFile;
 import static java.util.Objects.nonNull;
 
 import java.io.File;
@@ -12,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -22,6 +24,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.damco.utils.common.Config;
 
 /**
  * This class is responsible for performing all required user actions to
@@ -61,10 +65,94 @@ public class WebUtils {
 		wait.until(ExpectedConditions.visibilityOf(element));	
 	}
 	
+	/** It will check that an element is present on the DOM of a page and visible. 
+	 * @param locator
+	 * @param seconds
+	 */
+	public static void waitForElementVisibilityLocated(By element, long seconds) {
+		LOGGER.info(LOG_DESIGN + "waiting for visibility of element [{}] for {} seconds", element, seconds);
+		WebDriverWait wait = new WebDriverWait(driver, seconds);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(element));	
+	}
+	
+	/**
+	 * This method can be use to delete all the files from a folder
+	 * @param folderPath
+	 */
+	public static void deleteFilesFromFolder(String folderPath) {
+		String baseDir = System.getProperty("user.dir");
+		String filePath = baseDir + File.separator + folderPath;
+		File folder = new File(filePath);
+
+        // Get all files in the folder
+        File[] files = folder.listFiles();
+
+        // Delete each file in the folder
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    if (file.delete()) {
+                        LOGGER.info(LOG_DESIGN + "Deleted file: {} ", file.getName());
+                    } else {
+                        LOGGER.info(LOG_DESIGN + "Failed to delete file: {} ", file.getName());
+                    }
+                }
+            }
+        }
+    }
+	
+	/**
+	 * This method can be use to get the size of a file
+	 */
+	public static long getSizeOfFile(String downloadsFolderPath, String fileName) {
+		String baseDir = System.getProperty("user.dir");
+		String filePath = baseDir + File.separator + downloadsFolderPath;
+        File downloadsFolder = new File(filePath);
+        File[] files = downloadsFolder.listFiles();
+
+        // Verify the file size
+        String expectedFileName = fileName;
+
+        for (File file : files) {
+            if (file.isFile() && file.getName().equals(expectedFileName)) {
+                long fileSize = file.length();
+                System.out.println("Downloaded file size: " + fileSize + " bytes");
+                
+                return fileSize;
+            }
+        }
+        
+        return 0;
+	}
+	
+	/** It will check that an element is present on the DOM of a page and Clickable. 
+	 * @param locator
+	 * @param seconds
+	 */
+	public static void waitForElementToBeClickable(WebElement element, long seconds) {
+		LOGGER.info(LOG_DESIGN + "waiting for visibility of element [{}] for {} seconds", element, seconds);
+		WebDriverWait wait = new WebDriverWait(driver, seconds);
+		wait.until(ExpectedConditions.elementToBeClickable(element));	
+	}
+	
+	/**
+	 * This method can be use to generate a file path 
+	 * 
+	 * @param configFilePath relative file path after base directory 
+	 * 
+	 * @return file path 
+	 */
+	public static String generateFilePath(String configFilePath) {
+		String baseDir = System.getProperty("user.dir");
+		String filePath = baseDir + File.separator + configFilePath;
+		
+		return filePath;
+	}
+	
 	/** It will hard wait for the given seconds.
 	 * @param seconds
 	 */
-	public static void sleep(int seconds) {
+	public static void hardWait(int seconds) {
 		LOGGER.info(LOG_DESIGN + "Waiting for {} seconds", seconds);
 		try {
 			Thread.sleep(seconds * 1000);
@@ -115,6 +203,27 @@ public class WebUtils {
 		LOGGER.info(LOG_DESIGN + "Entering text for element: [{}] Text is :[{}]", element, text);
 		element.sendKeys(text);
 		
+	}
+	
+	/** It enters the value in text box without clearing previous value.
+	 * @param locator
+	 * @param text
+	 */
+	public static void enterTextWithouClear(WebElement element, String text) {
+		highlightWebElement(element);
+		LOGGER.info(LOG_DESIGN + "Entering text for element: [{}] Text is :[{}]", element, text);
+		element.sendKeys(text);
+		
+	}
+	
+	/** It enters the keyboard operation in text box.
+	 * @param locator
+	 * @param key
+	 */
+	public static void enterKey(WebElement element, Keys key) {
+		highlightWebElement(element);
+		LOGGER.info(LOG_DESIGN + "Entering text for element: [{}] Text is :[{}]", element, key);
+		element.sendKeys(key);
 	}
 	
 	

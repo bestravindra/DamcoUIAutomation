@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="smoke" verbose="8">
+	<listeners>
+		<listener class-name="com.damco.listeners.CustomReporter" />
+	</listeners>
+
+	<test name="MMTFlightTest">
+		<parameter name="browser" value="chrome" />
+		<parameter name="nodeURL" value="" /> <!-- any server/machine URL where grid is connected or cloud url e.g SauceLabs,BrowserStack 
+			etc -->
+		<classes>
+			<class name="com.damco.tests.web.MailAolTest">
+				<methods>
+					<include name="test_aol_compose_email_and_attachment" />
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>

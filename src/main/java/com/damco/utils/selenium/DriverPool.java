@@ -4,9 +4,11 @@ package com.damco.utils.selenium;
 import static com.damco.utils.common.Constants.CHROME;
 import static com.damco.utils.common.Constants.LOG_DESIGN;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,6 +18,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
+
+import com.damco.utils.common.Config;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -110,6 +114,10 @@ public class DriverPool {
 		ChromeOptions options = new ChromeOptions();
 		options.setExperimentalOption("useAutomationExtension", false);
 		options.addArguments("--disable-notifications");
+		Map<String, Object> prefs = new HashMap<>();
+		prefs.put("download.default_directory", System.getProperty("user.dir")+ File.separator +
+												Config.getProperty("fileDownloadPath"));
+		options.setExperimentalOption("prefs", prefs);
 		options.setCapability(ChromeOptions.CAPABILITY, options);
 
 		return new ChromeDriver(options);

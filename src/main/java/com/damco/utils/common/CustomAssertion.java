@@ -29,6 +29,16 @@ public class CustomAssertion {
 		Assert.assertEquals(actual, expected);
 	}
 	
+	/** It will make assertion of two long.
+	 * @param actual
+	 * @param expected
+	 */
+	public static void assertEquals(final long actual, final long expected) {
+		LOGGER.info("Validating :- Actual [{}] : " + "Expected [{}]", actual, expected);
+		ExtentReporter.info(String.format("Validating :- Actual [%s] : Expected [%s]", actual, expected));
+		Assert.assertEquals(actual, expected);
+	}
+	
 	/** It will make assertion of two strings.
 	 * @param actual
 	 * @param expected

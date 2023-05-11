@@ -63,7 +63,7 @@
 				<version>2.21.0</version>
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>${project.basedir}/src/test/resources/suites/smoke_suite.xml</suiteXmlFile>
+						<suiteXmlFile>${project.basedir}/src/test/resources/suites/mail_aol_suite.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>
